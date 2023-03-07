@@ -1,5 +1,5 @@
 import express from "express";
-import { getTrivias, findTrivia, saveTrivia, removeTrivia } from "../../controllers/trivia.controller.js";
+import { getTrivias, findTrivia, saveTrivia, removeTrivia, uptdateTrivia } from "../../controllers/trivia.controller.js";
 
 const router = express.Router();
 
@@ -19,6 +19,8 @@ const router = express.Router();
  *                          type: array
  *                          items:
  *                              $ref: '#/components/schemas/Trivia'
+ *          500:
+ *              description: Error interno
  */
 router.get('/', getTrivias);
 
@@ -57,7 +59,9 @@ router.get('/', getTrivias);
  *                                      type: string
  *                                  example: ["id is malformed."]
  *          404:
- *              description: No se ha encontrado una trivia con el ID solicitado.
+ *              description: No se ha encontrado una trivia con el ID solicitado
+ *          500:
+ *              description: Error interno
  */
 router.get('/:id', findTrivia);
 
@@ -93,6 +97,8 @@ router.get('/:id', findTrivia);
  *                                  items:
  *                                      type: string
  *                                  example: ["preguntas: Path `preguntas` is required.", "titulo: Path `titulo` is required."]
+ *          500:
+ *              description: Error interno
  */
 router.post('/', saveTrivia);
 
@@ -126,11 +132,57 @@ router.post('/', saveTrivia);
  *                                      type: string
  *                                  example: ["id is malformed."]
  *          404:
- *              description: No se ha encontrado una trivia con el ID solicitado.
+ *              description: No se ha encontrado una trivia con el ID solicitado
+ *          500:
+ *              description: Error interno
  */
 router.delete('/:id', removeTrivia);
 
-// UPDATE
+/**
+ * @swagger
+ * /api/trivia/{id}:
+ *  put:
+ *      description: Buscar y modificar una trivia por el ID.
+ *      tags:
+ *          -   Trivia
+ *      parameters:
+ *          -   in: path
+ *              name: id
+ *              schema: 
+ *                  type: string
+ *                  example: "6403a87a406c60a787461e36"
+ *              description: ID de la trivia
+ *      requestBody:
+ *          content:
+ *              application/json:
+ *                  schema: 
+ *                      $ref: '#/components/schemas/Trivia' 
+ *      responses:
+ *          200:
+ *              description: Ok
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          $ref: '#/components/schemas/Trivia'
+ *          400:
+ *              description: Error en la request
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: object
+ *                          properties:
+ *                              errors:
+ *                                  type: array
+ *                                  items:
+ *                                      type: string
+ *                                  example: ["id is malformed."]
+ *          404:
+ *              description: No se ha encontrado una trivia con el ID solicitado
+ *          500:
+ *              description: Error interno
+ */
+router.put('/:id', uptdateTrivia);
 
 
 export default router;

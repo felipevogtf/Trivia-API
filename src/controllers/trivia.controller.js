@@ -60,4 +60,25 @@ const removeTrivia = ((request, response, next) => {
 
 });
 
-export { getTrivias, findTrivia, saveTrivia, removeTrivia };
+const uptdateTrivia = ((request, response, next) => {
+    const id = request.params.id;
+    const data = request.body;
+
+    const newTriviaData = {
+        titulo: data.titulo,
+        descripcion: data.descripcion,
+        es_privada: data.es_privada,
+        preguntas: data.preguntas
+    }
+
+    Trivia.findByIdAndUpdate(id, newTriviaData, { new: true }).then(data => {
+        if (data) {
+            response.json(data);
+        } else {
+            response.status(404).end();
+        }
+    }).catch(next);
+
+});
+
+export { getTrivias, findTrivia, saveTrivia, removeTrivia, uptdateTrivia };
