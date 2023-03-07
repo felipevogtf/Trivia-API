@@ -16,7 +16,11 @@ const handleError = (error, request, response, next) => {
                 errors: errorsMessages
             });
             break;
-
+        case 'AuthError':
+            response.status(400).send({
+                errors: error.errors
+            });
+            break;
         default:
             response.status(500).end()
             break;
