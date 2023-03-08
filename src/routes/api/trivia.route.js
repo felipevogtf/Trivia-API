@@ -210,7 +210,7 @@ router.delete('/:id', isAuth, removeTrivia);
  *          500:
  *              description: Error interno
  */
-router.put('/:id', uptdateTrivia);
+router.put('/:id', isAuth, uptdateTrivia);
 
 
 export default router;

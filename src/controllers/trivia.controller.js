@@ -75,6 +75,7 @@ const removeTrivia = ((request, response, next) => {
 const uptdateTrivia = ((request, response, next) => {
     const id = request.params.id;
     const data = request.body;
+    const user = request.userId;
 
     const newTriviaData = {
         titulo: data.titulo,
@@ -83,7 +84,11 @@ const uptdateTrivia = ((request, response, next) => {
         preguntas: data.preguntas
     }
 
-    Trivia.findByIdAndUpdate(id, newTriviaData, { new: true }).then(data => {
+    Trivia.findOneAndUpdate(
+        { _id: id, user: user },
+        newTriviaData,
+        { new: true }
+    ).then(data => {
         if (data) {
             response.json(data);
         } else {
