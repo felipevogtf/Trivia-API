@@ -1,7 +1,17 @@
 import Trivia from './../models/trivia.model.js';
 
 const getTrivias = ((request, response, next) => {
-    Trivia.find({}).exec()
+    Trivia.find({ oculta: false }).exec()
+        .then(data => {
+            response.json(data);
+        })
+        .catch(next);
+});
+
+const getMyTrivias = ((request, response, next) => {
+    const user = request.userId;
+
+    Trivia.find({ user: user }).exec()
         .then(data => {
             response.json(data);
         })
@@ -27,11 +37,13 @@ const findTrivia = ((request, response, next) => {
 const saveTrivia = ((request, response, next) => {
 
     const data = request.body;
+    const user = request.userId;
 
     const trivia = new Trivia({
         titulo: data.titulo,
         descripcion: data.descripcion,
-        es_privada: data.es_privada,
+        oculta: data.oculta,
+        user: user,
         preguntas: data.preguntas
     });
 
@@ -49,10 +61,10 @@ const saveTrivia = ((request, response, next) => {
 });
 
 const removeTrivia = ((request, response, next) => {
-
+    const user = request.userId;
     const id = request.params.id;
 
-    Trivia.findByIdAndRemove(id).exec()
+    Trivia.findByIdAndRemove({ _id: id, user: user }).exec()
         .then(data => {
             response.status(204).end();
         })
@@ -81,4 +93,4 @@ const uptdateTrivia = ((request, response, next) => {
 
 });
 
-export { getTrivias, findTrivia, saveTrivia, removeTrivia, uptdateTrivia };
+export { getTrivias, findTrivia, saveTrivia, removeTrivia, uptdateTrivia, getMyTrivias };
