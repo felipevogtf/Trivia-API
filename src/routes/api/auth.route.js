@@ -182,7 +182,7 @@ router.post('/logout', logout);
 
 /**
  * @swagger
- * /api/auth/logout:
+ * /api/auth/logoutAll:
  *  post:
  *      description: Cerrar sesión en todos los dispositivos.
  *      tags:
