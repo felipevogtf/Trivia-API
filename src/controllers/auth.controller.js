@@ -1,7 +1,7 @@
-import jwt from "jsonwebtoken";
 import User from "../models/user.model.js";
-import * as argon2 from "argon2";
 import RefreshToken from "../models/refreshToken.model.js";
+import { authError, unauthorisedError } from "../utils/errors.js";
+import { createAccessToken, createRefreshToken, hashPassword, verifyPassword, verifyRefreshToken } from "../utils/authUtils.js";
 
 const signup = async (request, response, next) => {
 
@@ -26,7 +26,7 @@ const signup = async (request, response, next) => {
         let hash = '';
 
         try {
-            hash = await argon2.hash(data.password);
+            hash = await hashPassword(data.password);
         } catch (error) {
             next(error);
         }
@@ -115,14 +115,14 @@ const newRefreshToken = async (request, response, next) => {
 
     try {
         if (!data.hasOwnProperty('refreshToken')) {
-            unauthorised();
+            unauthorisedError();
         }
 
         const currentRefreshToken = verifyRefreshToken(data.refreshToken);
         const tokenExist = await RefreshToken.exists({ _id: currentRefreshToken.tokenId, owner: currentRefreshToken.userId });
 
         if (!tokenExist) {
-            unauthorised();
+            unauthorisedError();
         }
 
         const refreshTokenDoc = new RefreshToken({
@@ -157,7 +157,7 @@ const newAccessToken = async (request, response, next) => {
         const tokenExist = await RefreshToken.exists({ _id: currentRefreshToken.tokenId, owner: currentRefreshToken.userId });
 
         if (!tokenExist) {
-            unauthorised();
+            unauthorisedError();
         }
 
         const accessToken = createAccessToken(currentRefreshToken.userId);
@@ -182,7 +182,7 @@ const logout = async (request, response, next) => {
         const tokenExist = await RefreshToken.exists({ _id: refreshToken.tokenId, owner: refreshToken.userId });
 
         if (!tokenExist) {
-            unauthorised();
+            unauthorisedError();
         }
 
         try {
@@ -207,7 +207,7 @@ const logoutAll = async (request, response, next) => {
         const tokenExist = await RefreshToken.exists({ _id: refreshToken.tokenId, owner: refreshToken.userId });
 
         if (!tokenExist) {
-            unauthorised();
+            unauthorisedError();
         }
 
         try {
@@ -221,57 +221,6 @@ const logoutAll = async (request, response, next) => {
     } catch (error) {
         next(error);
     }
-}
-
-const createAccessToken = (userId) => {
-    return jwt.sign(
-        {
-            userId: userId
-        },
-        process.env.ACCESS_TOKEN_SECRET,
-        {
-            expiresIn: "10m"
-        }
-    );
-}
-
-const createRefreshToken = (userId, refreshTokenId) => {
-    return jwt.sign(
-        {
-            userId: userId,
-            tokenId: refreshTokenId
-        },
-        process.env.REFRESH_TOKEN_SECRET,
-        {
-            expiresIn: "30d"
-        }
-    );
-}
-
-const verifyPassword = async (hashPassword, rawPassword) => {
-    const check = await argon2.verify(hashPassword, rawPassword);
-    return check;
-}
-
-const verifyRefreshToken = (token) => {
-    try {
-        return jwt.verify(token, process.env.REFRESH_TOKEN_SECRET)
-    } catch (error) {
-        unauthorised();
-    }
-}
-
-const authError = (message) => {
-    const error = new Error(message);
-    error.name = "AuthError";
-    error.errors = [message];
-    throw error;
-}
-
-const unauthorised = () => {
-    const error = new Error("Unauthorised");
-    error.name = "Unauthorised";
-    throw error;
 }
 
 export {

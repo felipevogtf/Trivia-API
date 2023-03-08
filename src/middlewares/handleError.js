@@ -1,4 +1,5 @@
 const handleError = (error, request, response, next) => {
+
     switch (error.name) {
         case 'CastError':
             response.status(400).send({
@@ -20,6 +21,9 @@ const handleError = (error, request, response, next) => {
             response.status(400).send({
                 errors: error.errors
             });
+            break;
+        case 'Unauthorised':
+            response.status(401).end();
             break;
         default:
             response.status(500).end()
