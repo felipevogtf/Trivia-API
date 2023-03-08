@@ -1,7 +1,7 @@
 import { verifyAccessToken } from "../utils/authUtils.js";
 import { unauthorisedError } from "../utils/errors.js";
 
-const verifyAcessToken = (request, response, next) => {
+const isAuth = (request, response, next) => {
     const authHeader = request.headers['authorization'];
 
     try {
@@ -21,4 +21,4 @@ const verifyAcessToken = (request, response, next) => {
     }
 }
 
-export default verifyAcessToken;
+export default isAuth;

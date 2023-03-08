@@ -16,9 +16,13 @@ import preguntaSchema from './pregunta.model.js';
  *                  type: string
  *                  description: Descripcion de la trivia.
  *                  example: "Descripcion de pruba"
- *              es_privada:
+ *              user:
+ *                  type: string
+ *                  description: ID del usuario.
+ *                  example: "6408bc363d758b7244399b4f"
+ *              oculta:
  *                  type: boolean
- *                  description: Si la trivia es privada o publica.
+ *                  description: Si la trivia es visible para todos o oculta.
  *              preguntas: 
  *                  type: array
  *                  items:
@@ -30,7 +34,11 @@ const triviaSchema = new Schema({
         required: true
     },
     descripcion: String,
-    es_privada: {
+    user: {
+        type: Schema.Types.ObjectId,
+        ref: 'User',
+    },
+    oculta: {
         type: Boolean,
         required: true
     },
