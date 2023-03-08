@@ -1,5 +1,6 @@
 import express from "express";
-import { getTrivias, findTrivia, saveTrivia, removeTrivia, uptdateTrivia } from "../../controllers/trivia.controller.js";
+import { getTrivias, findTrivia, saveTrivia, removeTrivia, uptdateTrivia, getMyTrivias } from "../../controllers/trivia.controller.js";
+import isAuth from "../../middlewares/isAuth.js";
 
 const router = express.Router();
 
@@ -23,6 +24,29 @@ const router = express.Router();
  *              description: Error interno
  */
 router.get('/', getTrivias);
+
+/**
+ * @swagger
+ * /api/trivia/own:
+ *  get:
+ *      security:
+ *          - bearerAuth: []
+ *      description: Lista de todas las trivias realizadas por el usuario.
+ *      tags:
+ *          -   Trivia
+ *      responses:
+ *          200:
+ *              description: Ok
+ *              content:
+ *                  application/json:
+ *                      schema:
+ *                          type: array
+ *                          items:
+ *                              $ref: '#/components/schemas/Trivia'
+ *          500:
+ *              description: Error interno
+ */
+router.get('/own', isAuth, getMyTrivias);
 
 /**
  * @swagger
@@ -69,6 +93,8 @@ router.get('/:id', findTrivia);
  * @swagger
  * /api/trivia:
  *  post:
+ *      security:
+ *          - bearerAuth: []
  *      description: Guardar una trivia.
  *      tags:
  *          -   Trivia
@@ -100,12 +126,14 @@ router.get('/:id', findTrivia);
  *          500:
  *              description: Error interno
  */
-router.post('/', saveTrivia);
+router.post('/', isAuth, saveTrivia);
 
 /**
  * @swagger
  * /api/trivia/{id}:
  *  delete:
+ *      security:
+ *          - bearerAuth: []
  *      description: Buscar y elminar una trivia por el ID.
  *      tags:
  *          -   Trivia
@@ -136,7 +164,7 @@ router.post('/', saveTrivia);
  *          500:
  *              description: Error interno
  */
-router.delete('/:id', removeTrivia);
+router.delete('/:id', isAuth, removeTrivia);
 
 /**
  * @swagger
