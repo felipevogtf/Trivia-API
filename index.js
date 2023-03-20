@@ -8,10 +8,10 @@ import { swaggerDocs, swaggerRoute } from "./src/config/swagger.js";
 const app = express();
 
 const hostname = process.env.APP_URL;
-const port = process.env.APP_PORT;
+const port = process.env.PORT;
 
 app.use(express.json())
-swaggerDocs(app);
+swaggerDocs(app); 
 app.use('/', routes)
 
 app.listen(port, () => {
