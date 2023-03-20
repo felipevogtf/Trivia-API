@@ -25,7 +25,7 @@ REFRESH_TOKEN_SECRET='refresh_token'
 
 La variable `APP_URL` contiene el valor por defecto de `${{RAILWAY_STATIC_URL}}`, para obtener la url donde se alojara el proyecto.
 
-[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/6ld4Z8?referralCode=J3RH01) 
+[![Deploy on Railway](https://railway.app/button.svg)](https://railway.app/template/Tzs7vw?referralCode=J3RH01)
 
 ## Documentación
 
