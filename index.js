@@ -15,6 +15,6 @@ swaggerDocs(app);
 app.use('/', routes)
 
 app.listen(port, () => {
-    console.log(`App listening on ${hostname}:${port}`);
-    console.log(`Swagger listening on ${hostname}:${port}${swaggerRoute}`);
+    console.log(`App listening on https://${hostname}`);
+    console.log(`Swagger listening on https://${hostname}${swaggerRoute}`);
 })
