@@ -7,7 +7,7 @@ import { swaggerDocs, swaggerRoute } from "./src/config/swagger.js";
 
 const app = express();
 
-const hostname = process.env.APP_URL;
+const hostname = process.env.RAILWAY_STATIC_URL;
 const port = process.env.PORT;
 
 app.use(express.json())
