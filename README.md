@@ -10,9 +10,8 @@ Una API para generar trivias, realidazo con Mongoose y Express.
 
 </br>
 
-  
 
-<a  href="https://felipevogtf.github.io/Github-Portfolio/"  rel="noopener noreferrer"  target="_blank">![demo](https://raw.githubusercontent.com/felipevogtf/Github-Portfolio/master/public/demo.jpg)</a>
+![demo](https://raw.githubusercontent.com/felipevogtf/Trivia-API/master/demo.jpg)
 
 
 ## Despliegue en Railway
